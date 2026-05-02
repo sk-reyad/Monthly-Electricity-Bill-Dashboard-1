@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electricity Bill Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero-card">
+      <div class="hero-copy">
+        <p class="eyebrow">Live Google Sheet Dashboard</p>
+        <h1>Electricity Bill Dashboard</h1>
+        <p class="hero-text">Choose any visible month sheet from your ledger and view total usage, recharge, unit price, common bill, tenant bills, paid amounts, dues, and month-by-month comparisons.</p>
+      </div>
+      <div class="hero-control-card">
+        <label for="sheetSelect">Select month sheet</label>
+        <select id="sheetSelect" disabled>
+          <option>Loading...</option>
+        </select>
+        <button id="refreshBtn" class="primary-btn">Refresh dashboard</button>
+        <a id="openSheetLink" class="sheet-link" target="_blank" rel="noopener">Open Google Sheet</a>
+      </div>
+    </header>
+
+    <section id="setupPanel" class="setup-panel">
+      <div>
+        <p class="eyebrow">API key setup</p>
+        <h2>Connect exact sheet tabs</h2>
+        <p>This version uses the official Google Sheets API so newly added month sheets appear automatically. Paste your restricted Google Sheets API key once; it will be saved only in this browser.</p>
+      </div>
+      <div class="api-form">
+        <input id="apiKeyInput" type="password" placeholder="Paste Google Sheets API key here" autocomplete="off" />
+        <button id="saveApiKeyBtn" class="secondary-btn">Save key & load</button>
+        <button id="clearApiKeyBtn" class="ghost-btn">Clear saved key</button>
+      </div>
+    </section>
+
+    <div id="statusBox" class="status-box">Preparing dashboard...</div>
+
+    <main class="dashboard-grid">
+      <section class="panel full-width selected-panel">
+        <div class="panel-heading split-heading">
+          <div>
+            <p class="eyebrow">Selected month</p>
+            <h2 id="selectedTitle">No sheet loaded</h2>
+          </div>
+          <div class="right-meta">
+            <span id="loadedAt">—</span>
+            <span id="compareWith">—</span>
+          </div>
+        </div>
+        <div id="mainKpis" class="kpi-grid four-cols"></div>
+      </section>
+
+      <section class="panel collection-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Collection overview</p>
+          <h2>Bill, Paid & Due</h2>
+        </div>
+        <div id="collectionKpis" class="kpi-grid three-cols"></div>
+        <div id="insights" class="insight-list"></div>
+      </section>
+
+      <section class="panel due-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Due chart</p>
+          <h2>Positive Due by User</h2>
+        </div>
+        <div id="dueChart" class="bar-chart"></div>
+      </section>
+
+      <section class="panel full-width tenant-panel">
+        <div class="tenant-header">
+          <div>
+            <p class="eyebrow">Tenant details</p>
+            <h2>Sub-meter, Meter Bill, Common Bill, Paid & Due</h2>
+          </div>
+          <input id="tenantSearch" type="search" placeholder="Search user name..." />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Sub-meter Unit</th>
+                <th>Usage vs Prev.</th>
+                <th>Meter Bill</th>
+                <th>Common Space Bill</th>
+                <th>Total Bill</th>
+                <th>Paid</th>
+                <th>Due</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="tenantTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel full-width chart-section">
+        <div class="panel-heading">
+          <p class="eyebrow">Month-to-month comparison</p>
+          <h2>Total Usage, Recharge, Bill & Due</h2>
+        </div>
+        <div class="chart-grid">
+          <div id="usageChart" class="chart-card"></div>
+          <div id="moneyChart" class="chart-card"></div>
+        </div>
+      </section>
+
+      <section class="panel full-width snapshot-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">All loaded sheets</p>
+          <h2>Monthly Snapshot</h2>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Sheet</th>
+                <th>Total Monthly Usage</th>
+                <th>Total Monthly Recharge</th>
+                <th>Per Unit Price</th>
+                <th>Total Common Bill</th>
+                <th>Total Tenant Bill</th>
+                <th>Total Paid</th>
+                <th>Total Due</th>
+                <th>Users</th>
+              </tr>
+            </thead>
+            <tbody id="monthTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <template id="kpiTemplate">
+    <article class="kpi-card">
+      <span class="kpi-label"></span>
+      <strong class="kpi-value"></strong>
+      <span class="kpi-note"></span>
+    </article>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
