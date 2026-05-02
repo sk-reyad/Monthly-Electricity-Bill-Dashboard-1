@@ -9,7 +9,7 @@
 
 const CONFIG = {
   sheetId: "1JN07L26kiBKr-oG1dN0-GYBlQtQ1U1YUmQhUx5MRD2U",
-  googleApiKey: "AIzaSyDRT90Np_8jz2JuyYJ1ZkJ3UROF_3skTDI", // Optional: paste your Google Sheets API key here, or use the setup box in the website.
+  googleApiKey: "AIzaSyAHM0WKN7CJPgKaB0bNlsd2CW4jcsTwOLQ", // Optional: paste your Google Sheets API key here, or use the setup box in the website.
   minMonth: { year: 2025, monthIndex: 8 }, // SEP-2025. January = 0.
   range: "A1:Z140",
   refreshEveryMs: 5 * 60 * 1000,
