@@ -1056,3 +1056,321 @@ tbody tr:hover {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ---------------------------------------------------------
+   Mobile and cross-device layout fixes
+   Only CSS changes. No HTML or JavaScript changes needed.
+--------------------------------------------------------- */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.page-shell {
+  max-width: 1480px;
+  overflow-x: hidden;
+}
+
+.hero-card,
+.status-box,
+.panel,
+.setup-panel {
+  width: 100%;
+}
+
+/* Keep charts from forcing the full page wider than the phone screen */
+.chart-card {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.svg-chart {
+  display: block;
+}
+
+/* Keep table scrolling contained inside the table area on medium screens */
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Tablet/mobile hero correction */
+@media (max-width: 1100px) {
+  .hero-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .hero-control-card {
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .status-box {
+    width: 100%;
+  }
+}
+
+/* Phone layout: make the top area full-width and prevent side blank space */
+@media (max-width: 760px) {
+  body {
+    background:
+      radial-gradient(circle at top left, rgba(22, 163, 184, 0.26), transparent 22rem),
+      linear-gradient(135deg, var(--bg), var(--bg-2));
+  }
+
+  .page-shell {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 32px;
+    padding: 8px;
+  }
+
+  .hero-card {
+    min-height: auto;
+    padding: 24px 20px;
+    border-radius: 18px;
+    gap: 22px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.45rem, 12vw, 3.3rem);
+    letter-spacing: -0.06em;
+  }
+
+  .hero-text {
+    font-size: 0.96rem;
+    line-height: 1.65;
+  }
+
+  .hero-control-card {
+    max-width: 100%;
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .status-box {
+    margin-top: 12px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+  }
+
+  .dashboard-grid {
+    margin-top: 14px;
+    gap: 14px;
+  }
+
+  .panel {
+    padding: 18px 16px;
+    border-radius: 18px;
+  }
+
+  .panel h2,
+  .setup-panel h2 {
+    font-size: 1.45rem;
+    line-height: 1.18;
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+  }
+
+  .kpi-card {
+    min-height: auto;
+    padding: 18px 16px;
+  }
+
+  .kpi-value {
+    font-size: 2rem;
+  }
+
+  .tenant-header {
+    gap: 14px;
+  }
+
+  .tenant-header input {
+    width: 100%;
+    height: 46px;
+  }
+
+  .chart-card,
+  .bar-chart {
+    min-height: 280px;
+    padding: 14px;
+  }
+
+  .svg-chart {
+    width: 640px;
+    min-width: 640px;
+  }
+
+  .bar-row {
+    gap: 8px;
+  }
+}
+
+/* Phone table view: turn wide tables into readable stacked cards */
+@media (max-width: 640px) {
+  .tenant-panel .table-wrap,
+  .snapshot-panel .table-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .tenant-panel table,
+  .snapshot-panel table {
+    width: 100%;
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+  }
+
+  .tenant-panel thead,
+  .snapshot-panel thead {
+    display: none;
+  }
+
+  .tenant-panel tbody,
+  .snapshot-panel tbody,
+  .tenant-panel tr,
+  .snapshot-panel tr {
+    display: block;
+    width: 100%;
+  }
+
+  .tenant-panel tr,
+  .snapshot-panel tr {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 10px 28px rgba(31, 71, 136, 0.08);
+  }
+
+  .tenant-panel tr:hover,
+  .snapshot-panel tr:hover {
+    transform: none;
+    box-shadow: 0 14px 34px rgba(31, 71, 136, 0.12);
+  }
+
+  .tenant-panel td,
+  .snapshot-panel td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 18px;
+    width: 100%;
+    padding: 11px 14px;
+    border-bottom: 1px solid #eef3fb;
+    text-align: right;
+    white-space: normal;
+  }
+
+  .tenant-panel td:last-child,
+  .snapshot-panel td:last-child {
+    border-bottom: 0;
+  }
+
+  .tenant-panel td::before,
+  .snapshot-panel td::before {
+    flex: 0 0 45%;
+    color: #0f2d62;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .tenant-panel td:nth-child(1)::before { content: "User"; }
+  .tenant-panel td:nth-child(2)::before { content: "Sub-meter Unit"; }
+  .tenant-panel td:nth-child(3)::before { content: "Usage vs Prev."; }
+  .tenant-panel td:nth-child(4)::before { content: "Meter Bill"; }
+  .tenant-panel td:nth-child(5)::before { content: "Common Space Bill"; }
+  .tenant-panel td:nth-child(6)::before { content: "Total Bill"; }
+  .tenant-panel td:nth-child(7)::before { content: "Paid"; }
+  .tenant-panel td:nth-child(8)::before { content: "Due"; }
+  .tenant-panel td:nth-child(9)::before { content: "Status"; }
+
+  .snapshot-panel td:nth-child(1)::before { content: "Sheet"; }
+  .snapshot-panel td:nth-child(2)::before { content: "Total Monthly Usage"; }
+  .snapshot-panel td:nth-child(3)::before { content: "Total Monthly Recharge"; }
+  .snapshot-panel td:nth-child(4)::before { content: "Per Unit Price"; }
+  .snapshot-panel td:nth-child(5)::before { content: "Total Common Bill"; }
+  .snapshot-panel td:nth-child(6)::before { content: "Total Tenant Bill"; }
+  .snapshot-panel td:nth-child(7)::before { content: "Total Paid"; }
+  .snapshot-panel td:nth-child(8)::before { content: "Total Due"; }
+  .snapshot-panel td:nth-child(9)::before { content: "Users"; }
+
+  .tenant-panel td > *,
+  .snapshot-panel td > * {
+    max-width: 55%;
+  }
+
+  .money-value,
+  .amount-positive-due,
+  .amount-negative-due,
+  .amount-zero-due {
+    white-space: nowrap;
+  }
+
+  .change {
+    display: inline-block;
+    line-height: 1.35;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 420px) {
+  .page-shell {
+    padding: 7px;
+  }
+
+  .hero-card {
+    padding: 22px 18px;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.35rem;
+  }
+
+  .panel {
+    padding: 16px 14px;
+  }
+
+  .kpi-value {
+    font-size: 1.85rem;
+  }
+
+  .tenant-panel td,
+  .snapshot-panel td {
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  .tenant-panel td::before,
+  .snapshot-panel td::before {
+    flex-basis: 43%;
+  }
+
+  .tenant-panel td > *,
+  .snapshot-panel td > * {
+    max-width: 57%;
+  }
+
+  .svg-chart {
+    width: 600px;
+    min-width: 600px;
+  }
+}
