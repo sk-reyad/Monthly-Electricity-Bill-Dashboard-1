@@ -46,17 +46,18 @@ const els = {
   clearApiKeyBtn: document.getElementById("clearApiKeyBtn"),
   sheetSelect: document.getElementById("sheetSelect"),
   refreshBtn: document.getElementById("refreshBtn"),
+  themeToggleBtn: document.getElementById("themeToggleBtn"),
   openSheetLink: document.getElementById("openSheetLink"),
   statusBox: document.getElementById("statusBox"),
   selectedTitle: document.getElementById("selectedTitle"),
   loadedAt: document.getElementById("loadedAt"),
   compareWith: document.getElementById("compareWith"),
   mainKpis: document.getElementById("mainKpis"),
-  collectionKpis: document.getElementById("collectionKpis"),
-  insights: document.getElementById("insights"),
   dueChart: document.getElementById("dueChart"),
-  usageChart: document.getElementById("usageChart"),
-  moneyChart: document.getElementById("moneyChart"),
+  unitPriceTrendChart: document.getElementById("unitPriceTrendChart"),
+  billSplitChart: document.getElementById("billSplitChart"),
+  highestUsageChart: document.getElementById("highestUsageChart"),
+  dueAdvanceMatrix: document.getElementById("dueAdvanceMatrix"),
   tenantSearch: document.getElementById("tenantSearch"),
   tenantTableBody: document.getElementById("tenantTableBody"),
   monthTableBody: document.getElementById("monthTableBody"),
@@ -222,6 +223,31 @@ function renderApiPanel() {
   els.setupPanel.classList.toggle("hidden", hasKey);
   if (hasKey) els.apiKeyInput.value = "";
 }
+
+
+function getSavedTheme() {
+  return localStorage.getItem("electricityDashboardTheme") || "light";
+}
+
+function applyTheme(theme) {
+  const safeTheme = theme === "dark" ? "dark" : "light";
+  document.body.classList.toggle("dark-mode", safeTheme === "dark");
+  localStorage.setItem("electricityDashboardTheme", safeTheme);
+
+  if (els.themeToggleBtn) {
+    els.themeToggleBtn.textContent = safeTheme === "dark" ? "Light mode" : "Dark mode";
+    els.themeToggleBtn.setAttribute("aria-pressed", safeTheme === "dark" ? "true" : "false");
+    els.themeToggleBtn.setAttribute(
+      "aria-label",
+      safeTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"
+    );
+  }
+}
+
+function initializeTheme() {
+  applyTheme(getSavedTheme());
+}
+
 
 function timeoutPromise(ms, message) {
   return new Promise((_, reject) => window.setTimeout(() => reject(new Error(message)), ms));
@@ -627,19 +653,6 @@ function renderMainKpis(month, previous) {
   );
 }
 
-function renderCollectionKpis(month) {
-  const totals = month.totals;
-  const totalDueNumber = parseNumber(totals.due);
-  const dueNote = totalDueNumber === null ? "Due data unavailable" : totalDueNumber > 0.009 ? "Positive due exists" : totalDueNumber < -0.009 ? "Advance balance exists" : "No due";
-  const dueNoteClass = totalDueNumber === null ? "neutral" : totalDueNumber > 0.009 ? "up" : totalDueNumber < -0.009 ? "down" : "neutral";
-
-  els.collectionKpis.replaceChildren(
-    createKpi("Total Tenant Bill", formatMoney(totals.totalBill), `${month.tenants.length} user section(s)`),
-    createKpi("Total Paid", formatMoney(totals.paid), totals.totalBill ? `${((safeNumber(totals.paid) / safeNumber(totals.totalBill)) * 100).toFixed(1)}% collection rate` : "Collection rate unavailable"),
-    createKpi("Total Due", formatMoney(totals.due), dueNote, dueNoteClass),
-  );
-}
-
 function renderTenantTable(month, previous) {
   const search = normalizeKey(els.tenantSearch.value);
   const rows = month.tenants.filter((tenant) => !search || normalizeKey(tenant.name).includes(search));
@@ -669,23 +682,6 @@ function renderTenantTable(month, previous) {
   }).join("");
 }
 
-function renderInsights(month, previous) {
-  const positives = month.tenants
-    .filter((tenant) => safeNumber(tenant.due) > 0.009)
-    .sort((a, b) => safeNumber(b.due) - safeNumber(a.due));
-  const highest = positives[0];
-  const usage = previous ? changeText(month.mainMeter.totalUnit, previous.mainMeter.totalUnit, (v) => formatNumber(v, " units"), `from ${previous.sheetName}`).text : "No previous loaded month for comparison.";
-  const dataNotes = [];
-  if (month.warningCount) dataNotes.push(`${month.warningCount} source formula warning(s)`);
-  if (month.fallbackCount) dataNotes.push(`${month.fallbackCount} fallback calculation(s)`);
-
-  els.insights.innerHTML = [
-    `<div class="insight-item"><strong>Usage change:</strong> ${escapeHtml(usage)}</div>`,
-    `<div class="insight-item"><strong>Highest positive due:</strong> ${highest ? `${escapeHtml(highest.name)} — ${formatMoney(highest.due)}` : "No positive due found."}</div>`,
-    `<div class="insight-item"><strong>Data health:</strong> ${dataNotes.length ? escapeHtml(dataNotes.join(", ")) : "No source formula warning detected."}</div>`,
-  ].join("");
-}
-
 function renderDueChart(month) {
   const rows = month.tenants
     .map((tenant) => ({ name: tenant.name, due: Math.max(0, safeNumber(tenant.due)) }))
@@ -709,12 +705,24 @@ function renderDueChart(month) {
   }).join("");
 }
 
+
+
 function chartY(value, min, max, innerHeight, top) {
   if (max === min) return top + innerHeight / 2;
   return top + innerHeight - ((value - min) / (max - min)) * innerHeight;
 }
 
-function renderLineChart(container, title, data, series, formatter) {
+function makeSeriesPath(points) {
+  return points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x},${point.y}`).join(" ");
+}
+
+function sortedMonthsDescending() {
+  return sortedMonthsAscending().reverse();
+}
+
+function renderLineChart(container, title, data, series, formatter, options = {}) {
+  if (!container) return;
+
   if (data.length < 2) {
     container.innerHTML = `<div class="empty-state">${escapeHtml(title)} chart will appear after at least two month sheets are loaded.</div>`;
     return;
@@ -731,17 +739,19 @@ function renderLineChart(container, title, data, series, formatter) {
   const padding = { top: 24, right: 28, bottom: 58, left: 72 };
   const innerWidth = width - padding.left - padding.right;
   const innerHeight = height - padding.top - padding.bottom;
-  const rawMin = Math.min(0, ...values);
-  const rawMax = Math.max(0, ...values);
-  const buffer = rawMax === rawMin ? 1 : (rawMax - rawMin) * 0.09;
-  const min = rawMin - buffer;
-  const max = rawMax + buffer;
+  const rawMin = Math.min(...values);
+  const rawMax = Math.max(...values);
+  const rawRange = rawMax === rawMin ? Math.max(Math.abs(rawMax), 1) : rawMax - rawMin;
+  const buffer = rawRange * 0.09;
+  const min = options.startAtZero ? 0 : Math.min(0, rawMin) - buffer;
+  const max = options.startAtZero ? rawMax + buffer : Math.max(0, rawMax) + buffer;
+  const safeMax = max === min ? max + 1 : max;
   const x = (index) => padding.left + (data.length === 1 ? innerWidth / 2 : (index / (data.length - 1)) * innerWidth);
-  const y = (value) => chartY(value, min, max, innerHeight, padding.top);
+  const y = (value) => chartY(value, min, safeMax, innerHeight, padding.top);
 
   const grid = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
     const gridY = padding.top + innerHeight - ratio * innerHeight;
-    const labelValue = min + ratio * (max - min);
+    const labelValue = min + ratio * (safeMax - min);
     return `<line class="grid-line" x1="${padding.left}" x2="${width - padding.right}" y1="${gridY}" y2="${gridY}"></line><text class="axis-label" x="8" y="${gridY + 4}">${escapeHtml(formatter(labelValue))}</text>`;
   }).join("");
 
@@ -758,9 +768,15 @@ function renderLineChart(container, title, data, series, formatter) {
       if (value === null) return null;
       return { x: x(index), y: y(value), label: row.sheetName, value };
     }).filter(Boolean);
+
     if (!points.length) return "";
-    const path = points.map((point, index) => `${index === 0 ? "M" : "L"}${point.x},${point.y}`).join(" ");
-    const dots = points.map((point) => `<circle class="chart-dot-${className}" cx="${point.x}" cy="${point.y}" r="5"><title>${escapeHtml(item.label)} — ${escapeHtml(point.label)}: ${escapeHtml(formatter(point.value))}</title></circle>`).join("");
+
+    const path = makeSeriesPath(points);
+    const dots = points.map((point) => {
+      const pointLabel = `${item.label} — ${point.label}: ${formatter(point.value)}`;
+      return `<circle class="chart-dot-${className}" cx="${point.x}" cy="${point.y}" r="6" tabindex="0" role="button" data-tooltip="${escapeHtml(pointLabel)}" aria-label="${escapeHtml(pointLabel)}"><title>${escapeHtml(pointLabel)}</title></circle>`;
+    }).join("");
+
     return `<path class="chart-line-${className}" d="${path}"></path>${dots}`;
   }).join("");
 
@@ -770,48 +786,221 @@ function renderLineChart(container, title, data, series, formatter) {
   }).join("");
 
   container.innerHTML = `
-    <p class="chart-title">${escapeHtml(title)}</p>
+    <div class="panel-heading chart-panel-heading">
+      <p class="eyebrow">Price trend</p>
+      <h2>${escapeHtml(title)}</h2>
+    </div>
     <div class="legend">${legend}</div>
     <svg class="svg-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}">
       ${grid}
       ${paths}
       ${labels}
-    </svg>`;
+    </svg>
+    <p class="chart-hint">Hover or tap a point to see the exact value.</p>`;
+
+  const hint = container.querySelector(".chart-hint");
+  const defaultHint = "Hover or tap a point to see the exact value.";
+  let lockedTooltip = "";
+
+  container.querySelectorAll("[data-tooltip]").forEach((point) => {
+    const showTooltip = () => {
+      const value = point.getAttribute("data-tooltip") || defaultHint;
+      if (hint) hint.textContent = value;
+    };
+
+    point.addEventListener("mouseenter", showTooltip);
+    point.addEventListener("focus", showTooltip);
+    point.addEventListener("click", () => {
+      lockedTooltip = point.getAttribute("data-tooltip") || "";
+      showTooltip();
+    });
+    point.addEventListener("mouseleave", () => {
+      if (!lockedTooltip && hint) hint.textContent = defaultHint;
+    });
+    point.addEventListener("blur", () => {
+      if (!lockedTooltip && hint) hint.textContent = defaultHint;
+    });
+  });
 }
 
-function renderTrendCharts() {
-  const data = sortedMonthsAscending().map((month) => ({
+function renderGroupedBarChart(container, title, data, series, formatter) {
+  if (!container) return;
+
+  if (!data.length) {
+    container.innerHTML = `<div class="empty-state">No data found for ${escapeHtml(title)}.</div>`;
+    return;
+  }
+
+  const values = data.flatMap((row) => series.map((item) => Math.max(0, Math.abs(safeNumber(row[item.key])))));
+  const max = Math.max(1, ...values);
+
+  const legend = series.map((item, index) => {
+    const className = index === 0 ? "primary" : index === 1 ? "secondary" : "third";
+    return `<span><i class="${className}"></i>${escapeHtml(item.label)}</span>`;
+  }).join("");
+
+  const rows = data.map((row) => {
+    const bars = series.map((item, index) => {
+      const className = index === 0 ? "primary" : index === 1 ? "secondary" : "third";
+      const value = safeNumber(row[item.key]);
+      const width = Math.max(2, (Math.abs(value) / max) * 100);
+      return `
+        <div class="split-bar-line">
+          <span class="split-bar-label">${escapeHtml(item.shortLabel || item.label)}</span>
+          <span class="split-bar-track"><span class="split-bar-fill ${className}" style="width:${width}%"></span></span>
+          <span class="split-bar-value">${escapeHtml(formatter(value))}</span>
+        </div>`;
+    }).join("");
+
+    return `
+      <div class="split-row">
+        <strong>${escapeHtml(row.sheetName)}</strong>
+        <div class="split-bars">${bars}</div>
+      </div>`;
+  }).join("");
+
+  container.innerHTML = `
+    <p class="chart-title">${escapeHtml(title)}</p>
+    <div class="legend">${legend}</div>
+    <div class="split-chart">${rows}</div>`;
+}
+
+function renderHighestUsageChart() {
+  const container = els.highestUsageChart;
+  if (!container) return;
+
+  const months = sortedMonthsDescending();
+  const allUnits = months.flatMap((month) => month.tenants.map((tenant) => Math.abs(safeNumber(tenant.subMeterUnit))));
+  const max = Math.max(1, ...allUnits);
+
+  const cards = months.map((month) => {
+    const tenants = [...month.tenants]
+      .filter((tenant) => parseNumber(tenant.subMeterUnit) !== null)
+      .sort((a, b) => Math.abs(safeNumber(b.subMeterUnit)) - Math.abs(safeNumber(a.subMeterUnit)));
+
+    if (!tenants.length) return "";
+
+    const highestName = tenants[0].name;
+    const rows = tenants.map((tenant) => {
+      const unit = safeNumber(tenant.subMeterUnit);
+      const width = Math.max(2, (Math.abs(unit) / max) * 100);
+      const isHighest = normalizeKey(tenant.name) === normalizeKey(highestName);
+
+      return `
+        <div class="usage-user-row ${isHighest ? "highest" : ""}">
+          <span>${escapeHtml(tenant.name)}${isHighest ? " <em>Highest</em>" : ""}</span>
+          <span class="usage-track"><span class="usage-fill" style="width:${width}%"></span></span>
+          <b>${formatNumber(tenant.subMeterUnit, " units")}</b>
+        </div>`;
+    }).join("");
+
+    return `
+      <div class="usage-month-card">
+        <div class="usage-month-head">
+          <strong>${escapeHtml(month.sheetName)}</strong>
+          <span>Highest: ${escapeHtml(highestName)}</span>
+        </div>
+        <div class="usage-user-list">${rows}</div>
+      </div>`;
+  }).join("");
+
+  container.innerHTML = `
+    <p class="chart-title">Highest Usage User by Month</p>
+    <p class="chart-subtitle">Each month shows all users, with the highest usage user highlighted.</p>
+    <div class="usage-comparison-chart">${cards || `<div class="empty-state">No user usage data found.</div>`}</div>`;
+}
+
+function formatDueAdvanceCell(value) {
+  const number = parseNumber(value);
+  if (number === null || Math.abs(number) < 0.005) {
+    return { text: "Clear", className: "clear" };
+  }
+  if (number > 0) {
+    return { text: `${formatMoney(number)} Due`, className: "due" };
+  }
+  return { text: `${formatMoney(Math.abs(number))} Advance`, className: "advance" };
+}
+
+function renderDueAdvanceMatrix() {
+  const container = els.dueAdvanceMatrix;
+  if (!container) return;
+
+  const months = sortedMonthsDescending();
+  const userNames = [...new Set(months.flatMap((month) => month.tenants.map((tenant) => tenant.name)))]
+    .filter(Boolean)
+    .sort((a, b) => normalizeText(a).localeCompare(normalizeText(b)));
+
+  if (!months.length || !userNames.length) {
+    container.innerHTML = `<div class="empty-state">No tenant due/advance data found.</div>`;
+    return;
+  }
+
+  const cards = userNames.map((name) => {
+    const monthCells = months.map((month) => {
+      const tenant = month.tenants.find((item) => normalizeKey(item.name) === normalizeKey(name));
+      const dueInfo = formatDueAdvanceCell(tenant?.due);
+      return `
+        <span class="due-month-cell ${dueInfo.className}">
+          <small>${escapeHtml(month.sheetName)}</small>
+          <b>${escapeHtml(dueInfo.text)}</b>
+        </span>`;
+    }).join("");
+
+    return `
+      <div class="due-user-card">
+        <strong>${escapeHtml(name)}</strong>
+        <div class="due-month-grid">${monthCells}</div>
+      </div>`;
+  }).join("");
+
+  container.innerHTML = `
+    <p class="chart-title">Due / Advance by User and Month</p>
+    <div class="matrix-legend">
+      <span><i class="due"></i> Due</span>
+      <span><i class="advance"></i> Advance</span>
+      <span><i class="clear"></i> Clear</span>
+    </div>
+    <div class="due-advance-list">${cards}</div>`;
+}
+
+
+
+function renderAnalyticsCharts() {
+  const ascendingData = sortedMonthsAscending().map((month) => ({
     sheetName: month.sheetName,
-    totalUnit: month.mainMeter.totalUnit,
-    tenantUnit: month.totals.subMeterUnit,
-    recharge: month.mainMeter.rechargeAmount,
-    totalBill: month.totals.totalBill,
-    totalDue: month.totals.due,
+    perUnitPrice: month.mainMeter.perUnitPrice,
+  }));
+
+  const descendingData = sortedMonthsDescending().map((month) => ({
+    sheetName: month.sheetName,
+    commonBill: month.mainMeter.totalCommonBill,
+    meterBill: month.totals.meterBill,
   }));
 
   renderLineChart(
-    els.usageChart,
-    "Total Monthly Usage vs Users’ Sub-meter Usage",
-    data,
-    [
-      { key: "totalUnit", label: "Total monthly usage" },
-      { key: "tenantUnit", label: "Users’ sub-meter usage" },
-    ],
-    compactNumber,
+    els.unitPriceTrendChart,
+    "Per-unit Price Trend",
+    ascendingData,
+    [{ key: "perUnitPrice", label: "Per-unit price" }],
+    formatMoney,
+    { startAtZero: true },
   );
 
-  renderLineChart(
-    els.moneyChart,
-    "Recharge, Tenant Bill & Total Due",
-    data,
+  renderGroupedBarChart(
+    els.billSplitChart,
+    "Common Bill vs Meter Bill Split",
+    descendingData,
     [
-      { key: "recharge", label: "Monthly recharge" },
-      { key: "totalBill", label: "Total tenant bill" },
-      { key: "totalDue", label: "Total due" },
+      { key: "meterBill", label: "Meter bill", shortLabel: "Meter" },
+      { key: "commonBill", label: "Common bill", shortLabel: "Common" },
     ],
-    compactMoney,
+    formatMoney,
   );
+
+  renderHighestUsageChart();
+  renderDueAdvanceMatrix();
 }
+
 
 function renderMonthTable() {
   const rows = sortedMonthsAscending().reverse();
@@ -848,11 +1037,9 @@ function renderDashboard() {
   els.compareWith.textContent = previous ? `Compared with: ${previous.sheetName}` : "No previous loaded month";
 
   renderMainKpis(month, previous);
-  renderCollectionKpis(month);
-  renderInsights(month, previous);
   renderTenantTable(month, previous);
   renderDueChart(month);
-  renderTrendCharts();
+  renderAnalyticsCharts();
   renderMonthTable();
 }
 
@@ -866,15 +1053,11 @@ function renderEmpty() {
     createKpi("Per Unit Price", "—"),
     createKpi("Total Common Bill", "—"),
   );
-  els.collectionKpis.replaceChildren(
-    createKpi("Total Tenant Bill", "—"),
-    createKpi("Total Paid", "—"),
-    createKpi("Total Due", "—"),
-  );
-  els.insights.innerHTML = `<div class="insight-item">No live sheet data loaded yet.</div>`;
   els.dueChart.innerHTML = `<div class="empty-state">No due chart available.</div>`;
-  els.usageChart.innerHTML = `<div class="empty-state">No usage chart available.</div>`;
-  els.moneyChart.innerHTML = `<div class="empty-state">No money chart available.</div>`;
+  if (els.unitPriceTrendChart) els.unitPriceTrendChart.innerHTML = `<div class="empty-state">No unit price chart available.</div>`;
+  if (els.billSplitChart) els.billSplitChart.innerHTML = `<div class="empty-state">No bill split chart available.</div>`;
+  if (els.highestUsageChart) els.highestUsageChart.innerHTML = `<div class="empty-state">No highest usage chart available.</div>`;
+  if (els.dueAdvanceMatrix) els.dueAdvanceMatrix.innerHTML = `<div class="empty-state">No due/advance matrix available.</div>`;
   els.tenantTableBody.innerHTML = `<tr><td colspan="9">No data loaded.</td></tr>`;
   els.monthTableBody.innerHTML = `<tr><td colspan="9">No data loaded.</td></tr>`;
 }
@@ -886,6 +1069,13 @@ function wireEvents() {
   });
 
   els.refreshBtn.addEventListener("click", () => loadAllSheets());
+
+  if (els.themeToggleBtn) {
+    els.themeToggleBtn.addEventListener("click", () => {
+      const nextTheme = document.body.classList.contains("dark-mode") ? "light" : "dark";
+      applyTheme(nextTheme);
+    });
+  }
 
   els.saveApiKeyBtn.addEventListener("click", () => {
     const key = normalizeText(els.apiKeyInput.value);
@@ -922,6 +1112,7 @@ function startAutoRefresh() {
   }, CONFIG.refreshEveryMs);
 }
 
+initializeTheme();
 wireEvents();
 renderEmpty();
 populateDropdown();
