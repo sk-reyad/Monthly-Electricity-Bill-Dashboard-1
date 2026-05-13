@@ -61,7 +61,7 @@ select {
   margin: 0 0 12px;
   color: var(--blue);
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -98,7 +98,7 @@ select {
 .hero-control-card label {
   display: block;
   margin-bottom: 10px;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 0.76rem;
@@ -131,7 +131,7 @@ input:focus {
   min-height: 46px;
   border: 0;
   border-radius: 14px;
-  font-weight: 900;
+  font-weight: 700;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
@@ -169,7 +169,7 @@ button:disabled {
   display: block;
   margin-top: 14px;
   color: white;
-  font-weight: 900;
+  font-weight: 700;
   text-align: center;
   text-decoration: none;
 }
@@ -228,7 +228,7 @@ button:disabled {
   color: var(--orange);
   background: #fff3df;
   border-color: #fed7aa;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.55;
 }
 
@@ -306,7 +306,7 @@ button:disabled {
   margin-bottom: 12px;
   color: var(--muted);
   font-size: 0.77rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -317,6 +317,7 @@ button:disabled {
   font-size: clamp(2rem, 4vw, 2.6rem);
   line-height: 1;
   letter-spacing: -0.06em;
+  font-weight: 700;
 }
 
 .kpi-note {
@@ -325,16 +326,24 @@ button:disabled {
   font-weight: 600;
 }
 
-.kpi-note.up,
-.change.up {
+.kpi-note.up {
   color: var(--red);
-  font-weight: 900;
+  font-weight: 600;
 }
 
-.kpi-note.down,
+.change.up {
+  color: var(--red);
+  font-weight: 500;
+}
+
+.kpi-note.down {
+  color: var(--green);
+  font-weight: 600;
+}
+
 .change.down {
   color: var(--green);
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .kpi-note.neutral,
@@ -382,7 +391,7 @@ button:disabled {
   gap: 12px;
   align-items: center;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .bar-track {
@@ -438,7 +447,7 @@ th {
   color: #0f2d62;
   background: #e5efff;
   font-size: 0.76rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
@@ -463,17 +472,17 @@ td:nth-child(8) {
 
 .amount-positive-due {
   color: var(--red);
-  font-weight: 950;
+  font-weight: 700;
 }
 
 .amount-negative-due {
   color: var(--green);
-  font-weight: 950;
+  font-weight: 700;
 }
 
 .amount-zero-due {
   color: var(--muted);
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .badge {
@@ -483,7 +492,7 @@ td:nth-child(8) {
   padding: 0 10px;
   border-radius: 999px;
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .badge.due {
@@ -511,7 +520,7 @@ td:nth-child(8) {
 .chart-title {
   margin: 0 0 14px;
   color: var(--ink);
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .legend {
@@ -521,7 +530,7 @@ td:nth-child(8) {
   margin-bottom: 12px;
   color: var(--muted);
   font-size: 0.85rem;
-  font-weight: 850;
+  font-weight: 600;
 }
 
 .legend span {
@@ -581,7 +590,7 @@ td:nth-child(8) {
 .axis-label {
   fill: #60708a;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .chart-line-primary,
@@ -608,7 +617,7 @@ td:nth-child(8) {
   place-items: center;
   text-align: center;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .setup-panel.hidden {
@@ -825,24 +834,21 @@ body {
   animation-delay: 0.05s;
 }
 
-.collection-panel {
+
+.due-panel {
   animation-delay: 0.1s;
 }
 
-.due-panel {
+.tenant-panel {
   animation-delay: 0.15s;
 }
 
-.tenant-panel {
+.chart-section {
   animation-delay: 0.2s;
 }
 
-.chart-section {
-  animation-delay: 0.25s;
-}
-
 .snapshot-panel {
-  animation-delay: 0.3s;
+  animation-delay: 0.25s;
 }
 
 .kpi-card,
@@ -1219,6 +1225,7 @@ body {
 
 /* Phone table view: turn wide tables into readable stacked cards */
 @media (max-width: 640px) {
+
   .tenant-panel .table-wrap,
   .snapshot-panel .table-wrap {
     overflow: visible;
@@ -1286,35 +1293,87 @@ body {
     flex: 0 0 45%;
     color: #0f2d62;
     font-size: 0.72rem;
-    font-weight: 900;
+    font-weight: 700;
     letter-spacing: 0.08em;
     line-height: 1.35;
     text-align: left;
     text-transform: uppercase;
   }
 
-  .tenant-panel td:nth-child(1)::before { content: "User"; }
-  .tenant-panel td:nth-child(2)::before { content: "Sub-meter Unit"; }
-  .tenant-panel td:nth-child(3)::before { content: "Usage vs Prev."; }
-  .tenant-panel td:nth-child(4)::before { content: "Meter Bill"; }
-  .tenant-panel td:nth-child(5)::before { content: "Common Space Bill"; }
-  .tenant-panel td:nth-child(6)::before { content: "Total Bill"; }
-  .tenant-panel td:nth-child(7)::before { content: "Paid"; }
-  .tenant-panel td:nth-child(8)::before { content: "Due"; }
-  .tenant-panel td:nth-child(9)::before { content: "Status"; }
+  .tenant-panel td:nth-child(1)::before {
+    content: "User";
+  }
 
-  .snapshot-panel td:nth-child(1)::before { content: "Sheet"; }
-  .snapshot-panel td:nth-child(2)::before { content: "Total Monthly Usage"; }
-  .snapshot-panel td:nth-child(3)::before { content: "Total Monthly Recharge"; }
-  .snapshot-panel td:nth-child(4)::before { content: "Per Unit Price"; }
-  .snapshot-panel td:nth-child(5)::before { content: "Total Common Bill"; }
-  .snapshot-panel td:nth-child(6)::before { content: "Total Tenant Bill"; }
-  .snapshot-panel td:nth-child(7)::before { content: "Total Paid"; }
-  .snapshot-panel td:nth-child(8)::before { content: "Total Due"; }
-  .snapshot-panel td:nth-child(9)::before { content: "Users"; }
+  .tenant-panel td:nth-child(2)::before {
+    content: "Sub-meter Unit";
+  }
 
-  .tenant-panel td > *,
-  .snapshot-panel td > * {
+  .tenant-panel td:nth-child(3)::before {
+    content: "Usage vs Prev.";
+  }
+
+  .tenant-panel td:nth-child(4)::before {
+    content: "Meter Bill";
+  }
+
+  .tenant-panel td:nth-child(5)::before {
+    content: "Common Space Bill";
+  }
+
+  .tenant-panel td:nth-child(6)::before {
+    content: "Total Bill";
+  }
+
+  .tenant-panel td:nth-child(7)::before {
+    content: "Paid";
+  }
+
+  .tenant-panel td:nth-child(8)::before {
+    content: "Due";
+  }
+
+  .tenant-panel td:nth-child(9)::before {
+    content: "Status";
+  }
+
+  .snapshot-panel td:nth-child(1)::before {
+    content: "Sheet";
+  }
+
+  .snapshot-panel td:nth-child(2)::before {
+    content: "Total Monthly Usage";
+  }
+
+  .snapshot-panel td:nth-child(3)::before {
+    content: "Total Monthly Recharge";
+  }
+
+  .snapshot-panel td:nth-child(4)::before {
+    content: "Per Unit Price";
+  }
+
+  .snapshot-panel td:nth-child(5)::before {
+    content: "Total Common Bill";
+  }
+
+  .snapshot-panel td:nth-child(6)::before {
+    content: "Total Tenant Bill";
+  }
+
+  .snapshot-panel td:nth-child(7)::before {
+    content: "Total Paid";
+  }
+
+  .snapshot-panel td:nth-child(8)::before {
+    content: "Total Due";
+  }
+
+  .snapshot-panel td:nth-child(9)::before {
+    content: "Users";
+  }
+
+  .tenant-panel td>*,
+  .snapshot-panel td>* {
     max-width: 55%;
   }
 
@@ -1364,8 +1423,8 @@ body {
     flex-basis: 43%;
   }
 
-  .tenant-panel td > *,
-  .snapshot-panel td > * {
+  .tenant-panel td>*,
+  .snapshot-panel td>* {
     max-width: 57%;
   }
 
@@ -1373,4 +1432,1566 @@ body {
     width: 600px;
     min-width: 600px;
   }
+}
+
+/* ---------------------------------------------------------
+   Phase 2 typography cleanup
+   Softer font weights and color-only comparison emphasis.
+--------------------------------------------------------- */
+
+.change,
+.kpi-note {
+  font-weight: 500;
+}
+
+.change.up,
+.change.down,
+.change.neutral {
+  font-weight: 500;
+}
+
+.kpi-note.up,
+.kpi-note.down {
+  font-weight: 600;
+}
+
+.kpi-note.neutral {
+  font-weight: 500;
+}
+
+th,
+.badge,
+.legend,
+.axis-label,
+.bar-row,
+.empty-state,
+.status-box,
+.insight-item,
+.kpi-label {
+  font-weight: 600;
+}
+
+.amount-positive-due,
+.amount-negative-due,
+.amount-zero-due {
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------
+   Phase 3 tenant table horizontal-scroll fix
+   Keeps the page from shifting sideways while preserving table readability.
+--------------------------------------------------------- */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.page-shell,
+.dashboard-grid,
+.panel,
+.tenant-panel,
+.snapshot-panel {
+  max-width: 100%;
+}
+
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tenant-panel table {
+  width: 100%;
+  min-width: 860px;
+}
+
+.tenant-panel th,
+.tenant-panel td {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.tenant-panel th:nth-child(1),
+.tenant-panel td:nth-child(1) {
+  min-width: 130px;
+}
+
+.tenant-panel th:nth-child(3),
+.tenant-panel td:nth-child(3) {
+  min-width: 155px;
+}
+
+.tenant-panel th:nth-child(5),
+.tenant-panel td:nth-child(5) {
+  min-width: 150px;
+}
+
+/* The previous row translate hover could create a tiny page-level horizontal scroll. */
+tbody tr:hover {
+  transform: none;
+  box-shadow: inset 4px 0 0 var(--blue-2);
+}
+
+.money-value,
+.amount-positive-due,
+.amount-negative-due,
+.amount-zero-due {
+  white-space: nowrap;
+}
+
+/* Medium screens: keep the scroll inside the table box, not the whole page. */
+@media (max-width: 900px) {
+  .tenant-panel table {
+    min-width: 820px;
+  }
+
+  .tenant-panel th,
+  .tenant-panel td {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Phones already use the stacked-card layout. This prevents any leftover table width from pushing the viewport. */
+@media (max-width: 640px) {
+
+  .tenant-panel .table-wrap,
+  .snapshot-panel .table-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .tenant-panel table,
+  .snapshot-panel table {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .tenant-panel td,
+  .snapshot-panel td {
+    min-width: 0;
+    word-break: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .tenant-panel td>*,
+  .snapshot-panel td>* {
+    min-width: 0;
+  }
+
+  .tenant-panel td .money-value,
+  .snapshot-panel td .money-value,
+  .tenant-panel td .amount-positive-due,
+  .tenant-panel td .amount-negative-due,
+  .tenant-panel td .amount-zero-due {
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 7 dark mode
+   Frontend-only theme switch with saved preference.
+--------------------------------------------------------- */
+
+.theme-toggle-btn {
+  margin-top: 12px;
+}
+
+body.dark-mode {
+  --bg: #07111f;
+  --bg-2: #0f172a;
+  --card: rgba(15, 23, 42, 0.92);
+  --card-solid: #111c2e;
+  --ink: #e8f1ff;
+  --muted: #a9bad4;
+  --line: #2b3f5f;
+  --blue: #60a5fa;
+  --blue-2: #38bdf8;
+  --cyan: #22d3ee;
+  --green: #4ade80;
+  --red: #fb7185;
+  --orange: #fbbf24;
+  --shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+  background:
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.18), transparent 30rem),
+    radial-gradient(circle at top right, rgba(96, 165, 250, 0.16), transparent 30rem),
+    linear-gradient(135deg, var(--bg), var(--bg-2));
+}
+
+body.dark-mode .hero-card {
+  background:
+    linear-gradient(135deg, rgba(3, 7, 18, 0.98), rgba(15, 23, 42, 0.96) 48%, rgba(8, 47, 73, 0.95)),
+    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.16), transparent 22rem);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+}
+
+body.dark-mode .hero-text,
+body.dark-mode .hero-card .eyebrow,
+body.dark-mode .hero-control-card label {
+  color: rgba(232, 241, 255, 0.9);
+}
+
+body.dark-mode .hero-control-card {
+  border-color: rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.48);
+}
+
+body.dark-mode .hero-control-card:hover {
+  background: rgba(15, 23, 42, 0.62);
+  border-color: rgba(56, 189, 248, 0.42);
+}
+
+body.dark-mode select,
+body.dark-mode input[type="search"],
+body.dark-mode .api-form input {
+  color: var(--ink);
+  background: #0b1525;
+  border-color: var(--line);
+}
+
+body.dark-mode select option {
+  color: var(--ink);
+  background: #0b1525;
+}
+
+body.dark-mode select:focus,
+body.dark-mode input:focus {
+  border-color: var(--blue-2);
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.16);
+}
+
+body.dark-mode .setup-panel,
+body.dark-mode .panel {
+  border-color: rgba(43, 63, 95, 0.95);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+body.dark-mode .setup-panel p:not(.eyebrow),
+body.dark-mode .right-meta,
+body.dark-mode .kpi-label,
+body.dark-mode .kpi-note,
+body.dark-mode .insight-item,
+body.dark-mode .bar-row,
+body.dark-mode .axis-label,
+body.dark-mode .legend,
+body.dark-mode .empty-state {
+  color: var(--muted);
+}
+
+body.dark-mode .kpi-card,
+body.dark-mode .insight-item,
+body.dark-mode .bar-chart,
+body.dark-mode .chart-card {
+  border-color: var(--line);
+  background: rgba(17, 28, 46, 0.78);
+}
+
+body.dark-mode .kpi-card:hover,
+body.dark-mode .insight-item:hover,
+body.dark-mode .chart-card:hover,
+body.dark-mode .bar-chart:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(17, 28, 46, 0.94);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.24);
+}
+
+body.dark-mode .table-wrap {
+  border-color: var(--line);
+  background: #0b1525;
+}
+
+body.dark-mode table {
+  color: var(--ink);
+}
+
+body.dark-mode th {
+  color: #dbeafe;
+  background: #13233a;
+}
+
+body.dark-mode td {
+  border-bottom-color: var(--line);
+}
+
+body.dark-mode tbody tr:hover {
+  background: rgba(56, 189, 248, 0.08);
+  box-shadow: inset 4px 0 0 var(--blue-2);
+}
+
+body.dark-mode .status-box {
+  color: #fde68a;
+  background: rgba(120, 53, 15, 0.52);
+  border-color: rgba(251, 191, 36, 0.34);
+}
+
+body.dark-mode .status-box.success {
+  color: #bbf7d0;
+  background: rgba(20, 83, 45, 0.42);
+  border-color: rgba(74, 222, 128, 0.34);
+}
+
+body.dark-mode .status-box.error {
+  color: #fecdd3;
+  background: rgba(127, 29, 29, 0.42);
+  border-color: rgba(251, 113, 133, 0.34);
+}
+
+body.dark-mode .ghost-btn {
+  color: #dbeafe;
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(56, 189, 248, 0.34);
+}
+
+body.dark-mode .ghost-btn:hover {
+  background: rgba(30, 41, 59, 0.96);
+}
+
+body.dark-mode .primary-btn {
+  background: linear-gradient(135deg, #2563eb, #0891b2);
+  box-shadow: 0 16px 32px rgba(14, 165, 233, 0.18);
+}
+
+body.dark-mode .secondary-btn {
+  background: linear-gradient(135deg, #0f172a, #1d4ed8);
+}
+
+body.dark-mode .amount-positive-due,
+body.dark-mode .kpi-note.up,
+body.dark-mode .change.up {
+  color: #fb7185;
+}
+
+body.dark-mode .amount-negative-due,
+body.dark-mode .kpi-note.down,
+body.dark-mode .change.down {
+  color: #4ade80;
+}
+
+body.dark-mode .amount-zero-due,
+body.dark-mode .kpi-note.neutral,
+body.dark-mode .change.neutral {
+  color: #a9bad4;
+}
+
+body.dark-mode .badge.due {
+  color: #fecdd3;
+  background: rgba(127, 29, 29, 0.56);
+}
+
+body.dark-mode .badge.advance {
+  color: #bbf7d0;
+  background: rgba(20, 83, 45, 0.52);
+}
+
+body.dark-mode .badge.clear,
+body.dark-mode .badge.unknown {
+  color: #dbeafe;
+  background: rgba(30, 41, 59, 0.9);
+}
+
+body.dark-mode .bar-track {
+  background: #1e2f4a;
+}
+
+body.dark-mode .bar-fill {
+  background: linear-gradient(90deg, #fb7185, #fbbf24);
+}
+
+body.dark-mode .bar-value {
+  color: var(--ink);
+}
+
+body.dark-mode .grid-line {
+  stroke: #263a58;
+}
+
+body.dark-mode .axis-label {
+  fill: #a9bad4;
+}
+
+body.dark-mode .chart-line-primary,
+body.dark-mode .chart-dot-primary {
+  --series-color: #60a5fa;
+}
+
+body.dark-mode .chart-line-secondary,
+body.dark-mode .chart-dot-secondary {
+  --series-color: #22d3ee;
+}
+
+body.dark-mode .chart-line-third,
+body.dark-mode .chart-dot-third {
+  --series-color: #fbbf24;
+}
+
+body.dark-mode .legend i.primary {
+  background: #60a5fa;
+}
+
+body.dark-mode .legend i.secondary {
+  background: #22d3ee;
+}
+
+body.dark-mode .legend i.third {
+  background: #fbbf24;
+}
+
+body.dark-mode .chart-dot-primary,
+body.dark-mode .chart-dot-secondary,
+body.dark-mode .chart-dot-third {
+  stroke: #0b1525;
+}
+
+@media (max-width: 640px) {
+
+  body.dark-mode .tenant-panel tr,
+  body.dark-mode .snapshot-panel tr {
+    border-color: var(--line);
+    background: #0b1525;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  body.dark-mode .tenant-panel td,
+  body.dark-mode .snapshot-panel td {
+    border-bottom-color: var(--line);
+  }
+
+  body.dark-mode .tenant-panel td::before,
+  body.dark-mode .snapshot-panel td::before {
+    color: #bfdbfe;
+  }
+}
+
+@media print {
+  .theme-toggle-btn {
+    display: none !important;
+  }
+
+  body.dark-mode {
+    background: white;
+    color: #111827;
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 7 dark mode refinement
+   More vibrant dark palette while keeping contrast strong.
+--------------------------------------------------------- */
+
+body.dark-mode {
+  --bg: #071525;
+  --bg-2: #0a1830;
+  --card: rgba(11, 26, 44, 0.92);
+  --card-solid: #0d2035;
+  --ink: #eef6ff;
+  --muted: #b7c8df;
+  --line: #294766;
+  --blue: #6aa8ff;
+  --blue-2: #38d4ff;
+  --cyan: #3ce6d8;
+  --green: #52e58f;
+  --red: #ff7c93;
+  --orange: #ffc85a;
+  --shadow: 0 24px 64px rgba(0, 0, 0, 0.36);
+  background:
+    radial-gradient(circle at 10% 8%, rgba(56, 212, 255, 0.22), transparent 24rem),
+    radial-gradient(circle at 92% 10%, rgba(106, 168, 255, 0.18), transparent 26rem),
+    radial-gradient(circle at 50% 100%, rgba(60, 230, 216, 0.10), transparent 28rem),
+    linear-gradient(135deg, #071525 0%, #0b1730 45%, #0d2740 100%);
+}
+
+body.dark-mode .hero-card {
+  background:
+    radial-gradient(circle at 15% 18%, rgba(56, 212, 255, 0.16), transparent 20rem),
+    radial-gradient(circle at 84% 18%, rgba(60, 230, 216, 0.12), transparent 18rem),
+    linear-gradient(135deg, rgba(3, 13, 29, 0.98) 0%, rgba(8, 25, 58, 0.97) 42%, rgba(10, 52, 84, 0.95) 100%);
+  border: 1px solid rgba(68, 153, 255, 0.16);
+  box-shadow:
+    0 26px 72px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .hero-text {
+  color: rgba(238, 246, 255, 0.88);
+}
+
+body.dark-mode .hero-control-card {
+  border-color: rgba(80, 163, 255, 0.24);
+  background:
+    linear-gradient(180deg, rgba(9, 26, 51, 0.68), rgba(11, 28, 52, 0.56));
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .hero-control-card:hover {
+  background:
+    linear-gradient(180deg, rgba(12, 31, 60, 0.78), rgba(12, 30, 56, 0.66));
+  border-color: rgba(56, 212, 255, 0.42);
+}
+
+body.dark-mode .setup-panel,
+body.dark-mode .panel {
+  background:
+    linear-gradient(180deg, rgba(11, 26, 44, 0.94), rgba(13, 29, 49, 0.92));
+  border-color: rgba(55, 84, 118, 0.95);
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+body.dark-mode .kpi-card,
+body.dark-mode .insight-item,
+body.dark-mode .bar-chart,
+body.dark-mode .chart-card {
+  background:
+    linear-gradient(180deg, rgba(14, 32, 54, 0.86), rgba(12, 28, 47, 0.82));
+  border-color: rgba(52, 86, 121, 0.96);
+}
+
+body.dark-mode .kpi-card:hover,
+body.dark-mode .insight-item:hover,
+body.dark-mode .chart-card:hover,
+body.dark-mode .bar-chart:hover {
+  border-color: rgba(56, 212, 255, 0.46);
+  background:
+    linear-gradient(180deg, rgba(17, 38, 64, 0.96), rgba(14, 32, 55, 0.94));
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(56, 212, 255, 0.08);
+}
+
+body.dark-mode .table-wrap {
+  background:
+    linear-gradient(180deg, rgba(9, 23, 40, 0.98), rgba(10, 24, 40, 0.98));
+}
+
+body.dark-mode th {
+  background: #16304e;
+  color: #e8f3ff;
+}
+
+body.dark-mode tbody tr:hover {
+  background: rgba(56, 212, 255, 0.08);
+}
+
+body.dark-mode .ghost-btn {
+  color: #eef6ff;
+  background: linear-gradient(180deg, rgba(9, 24, 45, 0.96), rgba(10, 26, 48, 0.94));
+  border-color: rgba(56, 212, 255, 0.28);
+}
+
+body.dark-mode .ghost-btn:hover {
+  background: linear-gradient(180deg, rgba(12, 30, 56, 0.98), rgba(12, 31, 60, 0.96));
+  border-color: rgba(56, 212, 255, 0.42);
+}
+
+body.dark-mode .primary-btn {
+  background: linear-gradient(135deg, #2f6fff 0%, #18a8de 55%, #20c8c8 100%);
+  box-shadow: 0 16px 34px rgba(36, 127, 255, 0.24);
+}
+
+body.dark-mode .secondary-btn {
+  background: linear-gradient(135deg, #163c7a, #1187bc);
+}
+
+body.dark-mode .bar-track {
+  background: #183553;
+}
+
+body.dark-mode .grid-line {
+  stroke: #274764;
+}
+
+body.dark-mode .legend i.primary {
+  background: #6aa8ff;
+}
+
+body.dark-mode .legend i.secondary {
+  background: #3ce6d8;
+}
+
+body.dark-mode .legend i.third {
+  background: #ffc85a;
+}
+
+/* ---------------------------------------------------------
+   Phase 2B chart rebuild
+   New analytics charts and due chart moved after tenant details.
+--------------------------------------------------------- */
+
+.analytics-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.matrix-card {
+  grid-column: 1 / -1;
+}
+
+.split-chart,
+.highest-chart {
+  display: grid;
+  gap: 12px;
+}
+
+.split-row,
+.highest-row {
+  display: grid;
+  grid-template-columns: 86px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.highest-row {
+  grid-template-columns: 160px minmax(0, 1fr) 120px;
+  align-items: center;
+}
+
+.highest-row div {
+  display: grid;
+  gap: 4px;
+}
+
+.highest-row span {
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.highest-row b {
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.split-row>strong,
+.highest-row strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.split-bars {
+  display: grid;
+  gap: 8px;
+}
+
+.split-bar-line {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 105px;
+  gap: 10px;
+  align-items: center;
+}
+
+.split-bar-label,
+.split-bar-value {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.split-bar-value {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.split-bar-track,
+.highest-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2eaf7;
+}
+
+.split-bar-fill,
+.highest-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  animation: barGrow 0.85s ease both;
+}
+
+.split-bar-fill.primary {
+  background: linear-gradient(90deg, var(--blue), var(--blue-2));
+}
+
+.split-bar-fill.secondary {
+  background: linear-gradient(90deg, var(--cyan), #14b8a6);
+}
+
+.split-bar-fill.third {
+  background: linear-gradient(90deg, #f97316, var(--orange));
+}
+
+.highest-fill {
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+}
+
+.matrix-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.matrix-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.matrix-legend i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.matrix-legend i.due {
+  background: var(--red);
+}
+
+.matrix-legend i.advance {
+  background: var(--green);
+}
+
+.matrix-legend i.clear {
+  background: var(--muted);
+}
+
+.matrix-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: white;
+  -webkit-overflow-scrolling: touch;
+}
+
+.matrix-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+}
+
+.matrix-table th,
+.matrix-table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.matrix-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.matrix-table th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.matrix-table tbody th {
+  background: #f8fbff;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.matrix-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.matrix-pill.due {
+  color: var(--red);
+  background: #fee2e2;
+}
+
+.matrix-pill.advance {
+  color: var(--green);
+  background: #dcfce7;
+}
+
+.matrix-pill.clear {
+  color: var(--muted);
+  background: #eef2ff;
+}
+
+body.dark-mode .split-row,
+body.dark-mode .highest-row {
+  border-color: var(--line);
+  background: rgba(14, 32, 54, 0.62);
+}
+
+body.dark-mode .split-bar-track,
+body.dark-mode .highest-track {
+  background: #183553;
+}
+
+body.dark-mode .matrix-wrap {
+  border-color: var(--line);
+  background: #0b1525;
+}
+
+body.dark-mode .matrix-table tbody th {
+  background: #10243b;
+  color: var(--ink);
+}
+
+body.dark-mode .matrix-pill.due {
+  color: #fecdd3;
+  background: rgba(127, 29, 29, 0.56);
+}
+
+body.dark-mode .matrix-pill.advance {
+  color: #bbf7d0;
+  background: rgba(20, 83, 45, 0.52);
+}
+
+body.dark-mode .matrix-pill.clear {
+  color: #dbeafe;
+  background: rgba(30, 41, 59, 0.9);
+}
+
+@media (max-width: 1100px) {
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .split-row {
+    grid-template-columns: 1fr;
+  }
+
+  .highest-row {
+    grid-template-columns: 1fr;
+  }
+
+  .highest-row b {
+    text-align: left;
+  }
+
+  .split-bar-line {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .split-bar-value {
+    grid-column: 2;
+    text-align: left;
+  }
+
+  .matrix-table {
+    min-width: 720px;
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 2B refinement fixes
+   Compact due chart, non-scrolling due/advance cards, better chart sizing,
+   and newest-to-oldest ordering support.
+--------------------------------------------------------- */
+
+.analytics-grid {
+  align-items: start;
+}
+
+.analytics-panel .chart-card {
+  min-height: auto;
+}
+
+.due-panel {
+  grid-column: 1 / -1;
+}
+
+.due-panel .bar-chart {
+  min-height: 170px;
+  padding: 18px;
+}
+
+.due-panel .empty-state {
+  min-height: 120px;
+}
+
+#unitPriceTrendChart,
+#billSplitChart {
+  align-self: start;
+}
+
+#highestUsageChart,
+#dueAdvanceMatrix {
+  grid-column: 1 / -1;
+}
+
+.chart-hint,
+.chart-subtitle {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+
+.chart-dot-primary,
+.chart-dot-secondary,
+.chart-dot-third {
+  cursor: pointer;
+}
+
+.usage-comparison-chart,
+.due-advance-list {
+  display: grid;
+  gap: 14px;
+}
+
+.usage-month-card,
+.due-user-card {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.usage-month-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.usage-month-head strong,
+.due-user-card>strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.usage-month-head span {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.usage-user-list {
+  display: grid;
+  gap: 9px;
+}
+
+.usage-user-row {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr) 130px;
+  gap: 12px;
+  align-items: center;
+}
+
+.usage-user-row>span:first-child {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.usage-user-row em {
+  margin-left: 6px;
+  color: var(--blue);
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.usage-user-row b {
+  text-align: right;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.usage-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #e2eaf7;
+}
+
+.usage-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--blue), var(--cyan));
+  animation: barGrow 0.85s ease both;
+}
+
+.usage-user-row.highest .usage-fill {
+  background: linear-gradient(90deg, var(--blue), var(--cyan), #14b8a6);
+}
+
+.due-user-card {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.due-month-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 10px;
+}
+
+.due-month-cell {
+  display: grid;
+  gap: 5px;
+  min-height: 62px;
+  padding: 10px 11px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+}
+
+.due-month-cell small {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.due-month-cell b {
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.due-month-cell.due {
+  color: var(--red);
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+.due-month-cell.advance {
+  color: var(--green);
+  background: #dcfce7;
+  border-color: #bbf7d0;
+}
+
+.due-month-cell.clear {
+  color: var(--muted);
+  background: #eef2ff;
+  border-color: #dbeafe;
+}
+
+.due-month-cell.due small,
+.due-month-cell.advance small,
+.due-month-cell.clear small {
+  color: currentColor;
+  opacity: 0.78;
+}
+
+.matrix-wrap,
+.matrix-table {
+  min-width: 0;
+  overflow: visible;
+}
+
+body.dark-mode .usage-month-card,
+body.dark-mode .due-user-card {
+  border-color: var(--line);
+  background: rgba(14, 32, 54, 0.62);
+}
+
+body.dark-mode .usage-track {
+  background: #183553;
+}
+
+body.dark-mode .due-month-cell.due {
+  color: #fecdd3;
+  background: rgba(127, 29, 29, 0.56);
+  border-color: rgba(251, 113, 133, 0.24);
+}
+
+body.dark-mode .due-month-cell.advance {
+  color: #bbf7d0;
+  background: rgba(20, 83, 45, 0.52);
+  border-color: rgba(74, 222, 128, 0.24);
+}
+
+body.dark-mode .due-month-cell.clear {
+  color: #dbeafe;
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+@media (max-width: 900px) {
+  .usage-user-row {
+    grid-template-columns: 130px minmax(0, 1fr) 112px;
+  }
+
+  .due-user-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .due-panel .bar-chart {
+    min-height: 150px;
+  }
+
+  .usage-month-head {
+    display: grid;
+  }
+
+  .usage-user-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .usage-user-row b {
+    text-align: left;
+  }
+
+  .due-month-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 2B second refinement
+   Moves per-unit trend beside due chart, reduces empty space,
+   and improves chart interaction/spacing.
+--------------------------------------------------------- */
+
+.due-price-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.due-chart-block,
+.price-trend-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.62);
+  padding: 18px;
+}
+
+.due-chart-block .panel-heading {
+  margin-bottom: 16px;
+}
+
+.due-chart-block .bar-chart {
+  min-height: 170px;
+  padding: 16px;
+}
+
+.due-chart-block .empty-state {
+  min-height: 115px;
+}
+
+.price-trend-card {
+  min-height: auto;
+}
+
+.price-trend-card .svg-chart {
+  min-width: 520px;
+}
+
+.price-trend-card .chart-hint {
+  margin-top: 8px;
+}
+
+.chart-dot-primary,
+.chart-dot-secondary,
+.chart-dot-third {
+  outline: none;
+  transition: r 0.2s ease, filter 0.2s ease, stroke-width 0.2s ease;
+}
+
+.chart-dot-primary:hover,
+.chart-dot-secondary:hover,
+.chart-dot-third:hover,
+.chart-dot-primary:focus,
+.chart-dot-secondary:focus,
+.chart-dot-third:focus {
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.65));
+  stroke-width: 4;
+}
+
+#unitPriceTrendChart {
+  align-self: stretch;
+}
+
+#billSplitChart {
+  align-self: start;
+}
+
+#highestUsageChart .chart-subtitle {
+  display: block;
+  margin: 12px 0 18px;
+  line-height: 1.6;
+}
+
+body.dark-mode .due-chart-block,
+body.dark-mode .price-trend-card {
+  border-color: var(--line);
+  background:
+    linear-gradient(180deg, rgba(14, 32, 54, 0.86), rgba(12, 28, 47, 0.82));
+}
+
+body.dark-mode .chart-dot-primary:hover,
+body.dark-mode .chart-dot-secondary:hover,
+body.dark-mode .chart-dot-third:hover,
+body.dark-mode .chart-dot-primary:focus,
+body.dark-mode .chart-dot-secondary:focus,
+body.dark-mode .chart-dot-third:focus {
+  filter: drop-shadow(0 0 9px rgba(56, 212, 255, 0.7));
+}
+
+@media (max-width: 1100px) {
+  .due-price-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .price-trend-card .svg-chart {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 680px) {
+
+  .due-chart-block,
+  .price-trend-card {
+    padding: 14px;
+  }
+
+  .due-chart-block .bar-chart {
+    min-height: 145px;
+  }
+
+  .price-trend-card .svg-chart {
+    min-width: 560px;
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 2B third refinement
+   Aligns Per-unit heading style, pairs Highest Usage with Bill Split,
+   and changes positive due bar to orange-to-red.
+--------------------------------------------------------- */
+
+.price-trend-card .chart-panel-heading {
+  margin-bottom: 16px;
+}
+
+.price-trend-card .chart-panel-heading h2 {
+  margin: 0;
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  letter-spacing: -0.05em;
+}
+
+#highestUsageChart {
+  grid-column: auto;
+}
+
+#dueAdvanceMatrix {
+  grid-column: 1 / -1;
+}
+
+.bar-fill {
+  background: linear-gradient(90deg, #f97316 0%, #ef4444 55%, #dc2626 100%);
+}
+
+body.dark-mode .bar-fill {
+  background: linear-gradient(90deg, #fb923c 0%, #fb7185 58%, #ef4444 100%);
+}
+
+@media (max-width: 1100px) {
+
+  #highestUsageChart,
+  #dueAdvanceMatrix {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 2B fourth refinement
+   Equal height for Bill Split and Highest Usage cards.
+--------------------------------------------------------- */
+
+@media (min-width: 1101px) {
+
+  #billSplitChart,
+  #highestUsageChart {
+    height: 720px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+  }
+
+  #billSplitChart::-webkit-scrollbar,
+  #highestUsageChart::-webkit-scrollbar {
+    width: 9px;
+  }
+
+  #billSplitChart::-webkit-scrollbar-track,
+  #highestUsageChart::-webkit-scrollbar-track {
+    background: rgba(96, 112, 138, 0.14);
+    border-radius: 999px;
+  }
+
+  #billSplitChart::-webkit-scrollbar-thumb,
+  #highestUsageChart::-webkit-scrollbar-thumb {
+    background: rgba(14, 165, 233, 0.45);
+    border-radius: 999px;
+  }
+
+  #billSplitChart::-webkit-scrollbar-thumb:hover,
+  #highestUsageChart::-webkit-scrollbar-thumb:hover {
+    background: rgba(14, 165, 233, 0.65);
+  }
+
+  body.dark-mode #billSplitChart::-webkit-scrollbar-track,
+  body.dark-mode #highestUsageChart::-webkit-scrollbar-track {
+    background: rgba(183, 200, 223, 0.12);
+  }
+
+  body.dark-mode #billSplitChart::-webkit-scrollbar-thumb,
+  body.dark-mode #highestUsageChart::-webkit-scrollbar-thumb {
+    background: rgba(56, 212, 255, 0.42);
+  }
+
+  body.dark-mode #billSplitChart::-webkit-scrollbar-thumb:hover,
+  body.dark-mode #highestUsageChart::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 212, 255, 0.62);
+  }
+}
+
+/* ---------------------------------------------------------
+   Phase 2B fifth refinement
+   Keeps breathing space at the top and bottom of scrollable chart cards.
+--------------------------------------------------------- */
+
+@media (min-width: 1101px) {
+
+  #billSplitChart,
+  #highestUsageChart {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #billSplitChart .split-chart,
+  #highestUsageChart .usage-comparison-chart {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 8px 22px 0;
+    scroll-padding-top: 12px;
+    scroll-padding-bottom: 22px;
+    scrollbar-gutter: stable;
+  }
+
+  #billSplitChart .split-chart::after,
+  #highestUsageChart .usage-comparison-chart::after {
+    content: "";
+    display: block;
+    height: 10px;
+  }
+
+  #billSplitChart .split-chart::-webkit-scrollbar,
+  #highestUsageChart .usage-comparison-chart::-webkit-scrollbar {
+    width: 9px;
+  }
+
+  #billSplitChart .split-chart::-webkit-scrollbar-track,
+  #highestUsageChart .usage-comparison-chart::-webkit-scrollbar-track {
+    background: rgba(96, 112, 138, 0.14);
+    border-radius: 999px;
+  }
+
+  #billSplitChart .split-chart::-webkit-scrollbar-thumb,
+  #highestUsageChart .usage-comparison-chart::-webkit-scrollbar-thumb {
+    background: rgba(14, 165, 233, 0.45);
+    border-radius: 999px;
+  }
+
+  #billSplitChart .split-chart::-webkit-scrollbar-thumb:hover,
+  #highestUsageChart .usage-comparison-chart::-webkit-scrollbar-thumb:hover {
+    background: rgba(14, 165, 233, 0.65);
+  }
+
+  body.dark-mode #billSplitChart .split-chart::-webkit-scrollbar-track,
+  body.dark-mode #highestUsageChart .usage-comparison-chart::-webkit-scrollbar-track {
+    background: rgba(183, 200, 223, 0.12);
+  }
+
+  body.dark-mode #billSplitChart .split-chart::-webkit-scrollbar-thumb,
+  body.dark-mode #highestUsageChart .usage-comparison-chart::-webkit-scrollbar-thumb {
+    background: rgba(56, 212, 255, 0.42);
+  }
+
+  body.dark-mode #billSplitChart .split-chart::-webkit-scrollbar-thumb:hover,
+  body.dark-mode #highestUsageChart .usage-comparison-chart::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 212, 255, 0.62);
+  }
+}
+
+/* ---------------------------------------------------------
+   Test: theme-matched glowing gradient button border animation
+   Inspired by a rotating conic-gradient border effect.
+--------------------------------------------------------- */
+
+@property --dashboard-glow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes dashboardGlowRotate {
+  to {
+    --dashboard-glow-angle: 360deg;
+  }
+}
+
+.primary-btn,
+.secondary-btn,
+.ghost-btn,
+.theme-toggle-btn {
+  isolation: isolate;
+  border: 1px solid transparent;
+}
+
+.primary-btn::before,
+.secondary-btn::before,
+.ghost-btn::before,
+.theme-toggle-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background:
+    conic-gradient(from var(--dashboard-glow-angle),
+      transparent 0deg,
+      rgba(14, 165, 233, 0.12) 50deg,
+      rgba(37, 99, 235, 0.85) 105deg,
+      rgba(6, 182, 212, 0.95) 170deg,
+      rgba(20, 184, 166, 0.78) 230deg,
+      rgba(249, 115, 22, 0.75) 290deg,
+      transparent 360deg);
+  opacity: 0;
+  pointer-events: none;
+  animation: dashboardGlowRotate 3.2s linear infinite;
+  transition: opacity 0.28s ease, filter 0.28s ease;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.primary-btn:hover::before,
+.secondary-btn:hover::before,
+.ghost-btn:hover::before,
+.theme-toggle-btn:hover::before,
+.primary-btn:focus-visible::before,
+.secondary-btn:focus-visible::before,
+.ghost-btn:focus-visible::before,
+.theme-toggle-btn:focus-visible::before {
+  opacity: 1;
+  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.42));
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.ghost-btn:hover,
+.theme-toggle-btn:hover {
+  box-shadow:
+    0 16px 34px rgba(37, 99, 235, 0.18),
+    0 0 0 1px rgba(14, 165, 233, 0.12);
+}
+
+body.dark-mode .primary-btn::before,
+body.dark-mode .secondary-btn::before,
+body.dark-mode .ghost-btn::before,
+body.dark-mode .theme-toggle-btn::before {
+  background:
+    conic-gradient(from var(--dashboard-glow-angle),
+      transparent 0deg,
+      rgba(56, 212, 255, 0.18) 45deg,
+      rgba(106, 168, 255, 0.95) 100deg,
+      rgba(60, 230, 216, 0.98) 170deg,
+      rgba(82, 229, 143, 0.78) 230deg,
+      rgba(255, 124, 147, 0.78) 295deg,
+      transparent 360deg);
+}
+
+body.dark-mode .primary-btn:hover::before,
+body.dark-mode .secondary-btn:hover::before,
+body.dark-mode .ghost-btn:hover::before,
+body.dark-mode .theme-toggle-btn:hover::before,
+body.dark-mode .primary-btn:focus-visible::before,
+body.dark-mode .secondary-btn:focus-visible::before,
+body.dark-mode .ghost-btn:focus-visible::before,
+body.dark-mode .theme-toggle-btn:focus-visible::before {
+  filter: drop-shadow(0 0 12px rgba(56, 212, 255, 0.48));
+}
+
+body.dark-mode .primary-btn:hover,
+body.dark-mode .secondary-btn:hover,
+body.dark-mode .ghost-btn:hover,
+body.dark-mode .theme-toggle-btn:hover {
+  box-shadow:
+    0 16px 36px rgba(56, 212, 255, 0.14),
+    0 0 0 1px rgba(56, 212, 255, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .primary-btn::before,
+  .secondary-btn::before,
+  .ghost-btn::before,
+  .theme-toggle-btn::before {
+    animation: none;
+  }
+}
+
+/* ---------------------------------------------------------
+   Final alignment fix
+   Identical title/second-line spacing for Bill Split and Highest Usage cards.
+--------------------------------------------------------- */
+
+#billSplitChart .chart-title,
+#highestUsageChart .chart-title {
+  margin: 0 0 14px;
+}
+
+#billSplitChart .legend,
+#highestUsageChart .chart-subtitle {
+  min-height: 24px;
+  margin: 0 0 18px;
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
 }
