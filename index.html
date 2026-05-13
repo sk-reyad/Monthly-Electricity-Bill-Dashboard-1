@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="referrer" content="unsafe-url">
@@ -8,16 +9,19 @@
   <title>Electricity Bill Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div class="page-shell">
     <header class="hero-card">
       <div class="hero-copy">
         <p class="eyebrow">Live Google Sheet Dashboard</p>
         <h1>Electricity Bill Dashboard</h1>
-        <p class="hero-text">Choose any visible month sheet from your ledger and view total usage, recharge, unit price, common bill, tenant bills, paid amounts, dues, and month-by-month comparisons.</p>
+        <p class="hero-text">Choose any visible month sheet from your ledger and view total usage, recharge, unit price,
+          common bill, tenant bills, paid amounts, dues, and month-by-month comparisons.</p>
       </div>
       <div class="hero-control-card">
         <label for="sheetSelect">Select month sheet</label>
@@ -25,6 +29,8 @@
           <option>Loading...</option>
         </select>
         <button id="refreshBtn" class="primary-btn">Refresh dashboard</button>
+        <button id="themeToggleBtn" class="ghost-btn theme-toggle-btn" type="button" aria-pressed="false">Dark
+          mode</button>
         <a id="openSheetLink" class="sheet-link" target="_blank" rel="noopener">Open Google Sheet</a>
       </div>
     </header>
@@ -33,7 +39,8 @@
       <div>
         <p class="eyebrow">API key setup</p>
         <h2>Connect exact sheet tabs</h2>
-        <p>This version uses the official Google Sheets API so newly added month sheets appear automatically. Paste your restricted Google Sheets API key once; it will be saved only in this browser.</p>
+        <p>This version uses the official Google Sheets API so newly added month sheets appear automatically. Paste your
+          restricted Google Sheets API key once; it will be saved only in this browser.</p>
       </div>
       <div class="api-form">
         <input id="apiKeyInput" type="password" placeholder="Paste Google Sheets API key here" autocomplete="off" />
@@ -57,23 +64,6 @@
           </div>
         </div>
         <div id="mainKpis" class="kpi-grid four-cols"></div>
-      </section>
-
-      <section class="panel collection-panel">
-        <div class="panel-heading">
-          <p class="eyebrow">Collection overview</p>
-          <h2>Bill, Paid & Due</h2>
-        </div>
-        <div id="collectionKpis" class="kpi-grid three-cols"></div>
-        <div id="insights" class="insight-list"></div>
-      </section>
-
-      <section class="panel due-panel">
-        <div class="panel-heading">
-          <p class="eyebrow">Due chart</p>
-          <h2>Positive Due by User</h2>
-        </div>
-        <div id="dueChart" class="bar-chart"></div>
       </section>
 
       <section class="panel full-width tenant-panel">
@@ -104,14 +94,28 @@
         </div>
       </section>
 
-      <section class="panel full-width chart-section">
-        <div class="panel-heading">
-          <p class="eyebrow">Month-to-month comparison</p>
-          <h2>Total Usage, Recharge, Bill & Due</h2>
+
+      <section class="panel full-width due-panel">
+        <div class="due-price-grid">
+          <div class="due-chart-block">
+            <div class="panel-heading">
+              <p class="eyebrow">Due chart</p>
+              <h2>Positive Due by User</h2>
+            </div>
+            <div id="dueChart" class="bar-chart"></div>
+          </div>
+          <div id="unitPriceTrendChart" class="chart-card price-trend-card"></div>
         </div>
-        <div class="chart-grid">
-          <div id="usageChart" class="chart-card"></div>
-          <div id="moneyChart" class="chart-card"></div>
+      </section>
+      <section class="panel full-width chart-section analytics-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Billing analytics</p>
+          <h2>Useful Month-by-Month Insights</h2>
+        </div>
+        <div class="chart-grid analytics-grid">
+          <div id="billSplitChart" class="chart-card"></div>
+          <div id="highestUsageChart" class="chart-card"></div>
+          <div id="dueAdvanceMatrix" class="chart-card matrix-card"></div>
         </div>
       </section>
 
@@ -152,4 +156,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
